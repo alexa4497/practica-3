@@ -4,11 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        aplicacion.cpp \
-        funciones1.cpp \
-        leerArchivos.cpp \
+        inicioAdministradores.cpp \
         main.cpp \
-        metodos.cpp
+        menus.cpp \
+        metodo1.cpp \
+        metodo2.cpp
 
 HEADERS += \
     librerias.h

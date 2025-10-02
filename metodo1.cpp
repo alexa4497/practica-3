@@ -48,7 +48,7 @@ void aplicar_regla_codificacion(char* buffer_datos,
     }
 }
 
-// Implementación de codificar_primer_metodo (VERSION DEFINITIVA para Claves de Admin)
+
 void codificar_primer_metodo(const char* archivo_fuente,
                              const char* archivo_salida,
                              int n) {
@@ -71,7 +71,6 @@ void codificar_primer_metodo(const char* archivo_fuente,
         return;
     }
 
-    // El buffer debe ser del tamaño EXACTO de la clave de texto (ej: 4 bytes para "1097")
     const int NUM_BYTES_REAL = size_total_bytes;
     char* buffer_original = new char[NUM_BYTES_REAL];
     char* buffer_codificado = new char[NUM_BYTES_REAL];
@@ -80,17 +79,12 @@ void codificar_primer_metodo(const char* archivo_fuente,
     if (entrada.read(buffer_original, NUM_BYTES_REAL)) {
         memcpy(buffer_codificado, buffer_original, NUM_BYTES_REAL);
 
-        // --- LÓGICA DE CODIFICACIÓN (Determinista para Claves) ---
-
-        // 1. Usar el buffer original para contar sus bits. (Simula el primer bloque)
         int conteo_unos = 0;
         int conteo_ceros = 0;
         contar_bits(buffer_original, NUM_BYTES_REAL, n, &conteo_unos, &conteo_ceros);
 
-        // 2. Aplicar la regla de codificación usando el conteo (ahora sí, dependiente de N)
         aplicar_regla_codificacion(buffer_codificado, NUM_BYTES_REAL, n, conteo_unos, conteo_ceros);
 
-        // 3. Escribir el bloque codificado
         salida.write(buffer_codificado, NUM_BYTES_REAL);
     }
 

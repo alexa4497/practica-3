@@ -1,5 +1,5 @@
 #include "librerias.h"
-
+using namespace std;
 
 void verificarInicializacionAdmin(int n, int metodo) {
     inicializarBaseAdmin(n, metodo);
@@ -30,9 +30,11 @@ void inicializarBaseAdmin(int n, int metodo) {
         fuente << clave_texto;
         fuente.close();
 
+        // Paso 2: Codificar el archivo temporal
         if (metodo == 1) {
-
             codificar_primer_metodo(clave_fuente_txt, clave_codificada_temp, n);
+        } else if (metodo == 2) {
+            codificar_segundo_metodo(clave_fuente_txt, clave_codificada_temp, n);
         }
 
         ofstream sudo_out(archivo_sudo_bin, ios::app | ios::binary);
@@ -58,7 +60,7 @@ void inicializarBaseAdmin(int n, int metodo) {
         sudo_out.close();
         clave_in.close();
 
-       remove(clave_fuente_txt);
+        remove(clave_fuente_txt);
         remove(clave_codificada_temp);
 
         cout << "Clave " << clave_texto << " registrada." << endl;
@@ -74,8 +76,13 @@ bool validarAccesoAdmin(int n, int metodo, const string& clave_ingresada) {
     temp_in << clave_ingresada;
     temp_in.close();
 
+    // 1. Codificar la clave ingresada por el usuario
+    // ... (escritura de clave_ingresada_temp.txt) ...
+
     if (metodo == 1) {
         codificar_primer_metodo(clave_ingresada_temp, clave_codificada_temp, n);
+    } else if (metodo == 2) {
+        codificar_segundo_metodo(clave_ingresada_temp, clave_codificada_temp, n);
     }
 
     ifstream temp_file(clave_codificada_temp, ios::binary | ios::ate);
@@ -136,6 +143,7 @@ void logicaAccesoAdministrador(int n, int metodo) {
 
     string usuario_ingresado;
     string clave_ingresada;
+
 
     cout << "\n--- ACCESO ADMINISTRADOR: VALIDACION ---" << endl;
     cout << "Usuario: ";
