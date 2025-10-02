@@ -53,13 +53,16 @@ void codificar_primer_metodo(const char* archivo_fuente,
                              const char* archivo_salida,
                              int n) {
 
-    // Paso 1: Abrir archivos y obtener el tamaño total del archivo de la clave
     ifstream entrada(archivo_fuente, ios::in | ios::binary | ios::ate);
     ofstream salida(archivo_salida, ios::out | ios::binary);
 
-    if (!entrada.is_open() || !salida.is_open()) {
-        cerr << "Error al abrir archivos." << endl;
-        return;
+    try {
+        if (!entrada.is_open() || !salida.is_open()) {
+            string mensaje_error1 = "Error al abrir archivos.";
+            throw mensaje_error1;
+        }
+    } catch (const char *error1) {
+        cout << "Error : " << error1;
     }
 
     long size_total_bytes = entrada.tellg();
@@ -75,7 +78,6 @@ void codificar_primer_metodo(const char* archivo_fuente,
     char* buffer_original = new char[NUM_BYTES_REAL];
     char* buffer_codificado = new char[NUM_BYTES_REAL];
 
-    // Paso 2: Leer el bloque completo de la clave
     if (entrada.read(buffer_original, NUM_BYTES_REAL)) {
         memcpy(buffer_codificado, buffer_original, NUM_BYTES_REAL);
 

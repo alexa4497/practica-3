@@ -23,14 +23,20 @@ void inicializarBaseAdmin(int n, int metodo) {
         const char* clave_codificada_temp = "clave_codificada_temp.bin";
 
         ofstream fuente(clave_fuente_txt);
-        if (!fuente.is_open()) {
-            cout << "Error: No se pudo crear el archivo temporal para la clave " << clave_texto <<endl;
-            continue;
+        try {
+            if (!fuente.is_open()) {
+                string mensaje_error = "No se pudo crear el archivo temporal para la clave ";
+                mensaje_error += clave_texto;
+                throw mensaje_error;
+                continue;
+            }
+        } catch (const char *error2) {
+            cout << "Error :" << error2;
         }
+
         fuente << clave_texto;
         fuente.close();
 
-        // Paso 2: Codificar el archivo temporal
         if (metodo == 1) {
             codificar_primer_metodo(clave_fuente_txt, clave_codificada_temp, n);
         } else if (metodo == 2) {
@@ -40,10 +46,16 @@ void inicializarBaseAdmin(int n, int metodo) {
         ofstream sudo_out(archivo_sudo_bin, ios::app | ios::binary);
         ifstream clave_in(clave_codificada_temp, ios::in | ios::binary);
 
-        if (!sudo_out.is_open() || !clave_in.is_open()) {
-            cerr << "Error al abrir archivos para escribir en sudo.bin." << endl;
-            continue;
+        try {
+            if (!sudo_out.is_open() || !clave_in.is_open()) {
+                string mensaje_error2 ="Error al abrir archivos para escribir en sudo.bin.";
+                throw mensaje_error2;
+                continue;
+            }
+        } catch (const char *error3) {
+            cout << "Error : " << error3;
         }
+
 
         clave_in.seekg(0, ios::end);
         long size = clave_in.tellg();
@@ -75,9 +87,6 @@ bool validarAccesoAdmin(int n, int metodo, const string& clave_ingresada) {
     ofstream temp_in(clave_ingresada_temp);
     temp_in << clave_ingresada;
     temp_in.close();
-
-    // 1. Codificar la clave ingresada por el usuario
-    // ... (escritura de clave_ingresada_temp.txt) ...
 
     if (metodo == 1) {
         codificar_primer_metodo(clave_ingresada_temp, clave_codificada_temp, n);
@@ -140,10 +149,8 @@ bool validarAccesoAdmin(int n, int metodo, const string& clave_ingresada) {
 
 
 void logicaAccesoAdministrador(int n, int metodo) {
-
     string usuario_ingresado;
     string clave_ingresada;
-
 
     cout << "\n--- ACCESO ADMINISTRADOR: VALIDACION ---" << endl;
     cout << "Usuario: ";
@@ -151,10 +158,20 @@ void logicaAccesoAdministrador(int n, int metodo) {
     cout << "Clave: ";
     cin >> clave_ingresada;
 
-    if (validarAccesoAdmin(n, metodo, clave_ingresada)) {
-        cout << "\n*** ACCESO PERMITIDO. Bienvenido " << usuario_ingresado << ". ***" << endl;
+    try {
+        if (validarAccesoAdmin(n, metodo, clave_ingresada)) {
+            cout << "\n*** ACCESO PERMITIDO. Bienvenido " << usuario_ingresado << ". ***" << endl;
 
-    } else {
-        cout << "\n*** ACCESO DENEGADO. Usuario o clave incorrectos. ***" << endl;
+        } else {
+            string mensaje_error_acceso = "\n*** ACCESO DENEGADO. Usuario o clave incorrectos. ***";
+            throw mensaje_error_acceso;
+        }
+    }
+
+    catch (const string& error_msg) {
+        cout<< error_msg << endl;
+    }
+    catch (...) {
+        cout << "\n*** Error grave: Excepción desconocida. ***" << endl;
     }
 }
