@@ -7,9 +7,13 @@ void codificar_segundo_metodo(const char* archivo_fuente,
     ifstream entrada(archivo_fuente, ios::in | ios::binary | ios::ate);
     ofstream salida(archivo_salida, ios::out | ios::binary);
 
-    if (!entrada.is_open() || !salida.is_open()) {
-        cerr << "Error al abrir archivos." << endl;
-        return;
+    try {
+        if (!entrada.is_open() || !salida.is_open()) {
+            string mensaje_error1 = "Error al abrir archivos.";
+            throw mensaje_error1;
+        }
+    } catch (const char *error11) {
+        cout << "Error : " << error11;
     }
 
     long size_total_bytes = entrada.tellg();

@@ -2,7 +2,7 @@
 using namespace std;
 
 void verificarInicializacionAdmin(int n, int metodo) {
-    inicializarBaseAdmin(n, metodo);
+    imprimirArchivoBinario("sudo.bin");
     cout << "\n*** La base de datos de administradores fue CONFIGURADA/ACTUALIZADA con la Semilla (n): " << n << " y Metodo: " << metodo << " ***" << std::endl;
 }
 
@@ -162,16 +162,37 @@ void logicaAccesoAdministrador(int n, int metodo) {
         if (validarAccesoAdmin(n, metodo, clave_ingresada)) {
             cout << "\n*** ACCESO PERMITIDO. Bienvenido " << usuario_ingresado << ". ***" << endl;
 
+            int opcion_admin = 0;
+
+            do {
+                cout << "\n--- MENU DE ADMINISTRADOR ---" << endl;
+                cout << "1. Registrar Nuevo Usuario del Cajero" << endl;
+                cout << "2. Volver al Menu Principal" << endl;
+                cout << "Ingrese una opcion: ";
+                cin >> opcion_admin;
+
+                if (opcion_admin == 1) {
+                    try {
+                        registrarUsuarioCajero(n, metodo);
+                    }
+                    catch (const string& error_msg) {
+
+                        cout << error_msg << endl;
+                    }
+                }
+            } while (opcion_admin != 2);
+
+            cout << "\nSaliendo del Menu de Administrador." << endl;
+
         } else {
             string mensaje_error_acceso = "\n*** ACCESO DENEGADO. Usuario o clave incorrectos. ***";
             throw mensaje_error_acceso;
         }
     }
-
     catch (const string& error_msg) {
-        cout<< error_msg << endl;
+        cout << error_msg << endl;
     }
     catch (...) {
-        cout << "\n*** Error grave: Excepción desconocida. ***" << endl;
+        cerr << "\n*** Error grave: Excepcion desconocida capturada. ***" << endl;
     }
 }

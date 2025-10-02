@@ -7,6 +7,8 @@
 #include <cstring>
 #include <stdexcept>
 #include <cstdio>
+#include <stdio.h>
+#include <sstream>
 
 using namespace std;
 
@@ -28,6 +30,13 @@ void codificar_primer_metodo(const char* archivo_fuente, const char* archivo_sal
 //metodo 2
 void codificar_segundo_metodo(const char* archivo_fuente, const char* archivo_salida, int n);
 
+//crear usuarios
+void registrarUsuarioCajero(int n, int metodo);
+bool existeCedula(const string& cedula);
+
+//leer archivos
+void imprimirByteBinario(char byte);
+void imprimirArchivoBinario(const char* nombre_archivo);
 
 
 #endif // LIBRERIAS_H

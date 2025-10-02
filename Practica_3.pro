@@ -4,7 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        crearUsuarios.cpp \
         inicioAdministradores.cpp \
+        leerBinarios.cpp \
         main.cpp \
         menus.cpp \
         metodo1.cpp \
