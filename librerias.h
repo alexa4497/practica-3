@@ -40,6 +40,6 @@ bool existeCedula(const string& cedula);
 void imprimirByteBinario(char byte);
 void imprimirArchivoBinario(const char* nombre_archivo);
 
-bool verificarUsuario();
+void menuUsuario();
 
 #endif // LIBRERIAS_H

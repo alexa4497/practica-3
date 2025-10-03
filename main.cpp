@@ -1,9 +1,5 @@
 #include "librerias.h"
-#include <iostream>
 
-using namespace std;
-
-// Definir las variables globales
 int semilla_n_global = 0;
 int metodo_elegido_global = 0;
 
@@ -14,7 +10,6 @@ int main() {
 
     int metodo_elegido = inicioSistema(semilla_n);
 
-    // Asignar a las variables globales
     semilla_n_global = semilla_n;
     metodo_elegido_global = metodo_elegido;
 
@@ -28,7 +23,7 @@ int main() {
             logicaAccesoAdministrador(semilla_n, metodo_elegido);
             break;
         case 2:
-            verificarUsuario();  // Así como lo tienes, sin parámetros
+            menuUsuario();
             break;
         case 3:
             cout << "\nSaliendo del programa." << endl;
