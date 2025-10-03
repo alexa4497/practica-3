@@ -17,7 +17,7 @@ void realizarRetiro(string cedula, string clave, string& saldo_actual) {
 
     // Verificar si tiene suficiente saldo (incluyendo el costo de $1000)
     if (saldo >= (cantidad_retiro + 1000)) {
-        // Calcular nuevo saldo
+
         int nuevo_saldo = saldo - cantidad_retiro - 1000;
         saldo_actual = to_string(nuevo_saldo);
 
@@ -91,7 +91,7 @@ void realizarRetiro(string cedula, string clave, string& saldo_actual) {
         cout << "Nuevo saldo: $" << saldo_actual << endl;
         cout << "**********************" << endl;
     } else {
-        cout << "✗ Saldo insuficiente para realizar el retiro" << endl;
+        cout << "Saldo insuficiente para realizar el retiro" << endl;
         cout << "Necesitas: $" << (cantidad_retiro + 1000) << " (retiro + costo)" << endl;
         cout << "Saldo disponible: $" << saldo << endl;
     }
@@ -196,7 +196,7 @@ void menuUsuario() {
     txt_file.close();
 
     if (!encontrado) {
-        cout << "✗ Usuario no encontrado o clave incorrecta" << endl;
+        cout << "Usuario no encontrado o clave incorrecta" << endl;
         return;
     }
 
@@ -268,19 +268,19 @@ void menuUsuario() {
 
     cout << "VERIFICACION EXITOSA: Bienvenido " << cedula_encontrada << endl;
 
-    // MENÚ DE OPCIONES PARA EL USUARIO
+
     int opcion_usuario = 0;
     do {
         cout << "\n--- MENU USUARIO ---" << endl;
         cout << "1. Consultar saldo (costo: $1000)" << endl;
-        cout << "2. Realizar retiro (costo: $1000)" << endl;  // ← Actualiza esta línea
+        cout << "2. Realizar retiro (costo: $1000)" << endl;
         cout << "3. Salir" << endl;
         cout << "Ingrese opcion: ";
         cin >> opcion_usuario;
 
         switch (opcion_usuario) {
         case 1: {
-            // Convertir saldo a número y restar 1000
+
             int saldo_actual = stoi(saldo_usuario);
             if (saldo_actual >= 1000) {
                 saldo_actual -= 1000;
@@ -307,7 +307,7 @@ void menuUsuario() {
                 txt_lectura.close();
                 txt_temporal.close();
 
-                // Reemplazar archivo original
+
                 remove(archivo_txt);
                 rename("usuarios_temp.txt", archivo_txt);
 
@@ -363,7 +363,6 @@ void menuUsuario() {
 
         case 2:
             realizarRetiro(cedula_encontrada, clave_encontrada, saldo_usuario);
-
             break;
         case 3:
             cout << "Saliendo del menu usuario..." << endl;
@@ -371,5 +370,5 @@ void menuUsuario() {
         default:
             cout << "Opcion no valida" << endl;
         }
-    } while (opcion_usuario != 2);
+    } while (opcion_usuario != 3);
 }

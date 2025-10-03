@@ -9,10 +9,15 @@ void imprimirByteBinario(char byte) {
 void imprimirArchivoBinario(const char* nombre_archivo) {
     ifstream entrada(nombre_archivo, ios::in | ios::binary);
 
-    if (!entrada.is_open()) {
-        cout << "\n--- ERROR: No se pudo abrir el archivo " << nombre_archivo << " para impresion. ---" << endl;
+    try {
+        if (!entrada.is_open()) {
+            throw "No se pudo abrir el archivo para impresion.";
+        }
+    } catch (const char *error) {
+        cout << "Error: " << error;
         return;
     }
+
 
     cout << "\n--- CONTENIDO BINARIO DE " << nombre_archivo << " ---" << endl;
 
