@@ -1,4 +1,102 @@
 #include "librerias.h"
+
+void realizarRetiro(string cedula, string clave, string& saldo_actual) {
+    const char* archivo_txt = "usuarios.txt";
+    const char* archivo_bin = "usuarios.bin";
+    const char* usuario_temp_txt = "usuario_temp.txt";
+    const char* usuario_codificado_temp = "usuario_codificado_temp.bin";
+
+    int saldo = stoi(saldo_actual);
+    int cantidad_retiro;
+
+    cout << "\n--- RETIRO DE DINERO ---" << endl;
+    cout << "Saldo disponible: $" << saldo << endl;
+    cout << "Costo por retiro: $1000" << endl;
+    cout << "Ingrese la cantidad a retirar: $";
+    cin >> cantidad_retiro;
+
+    // Verificar si tiene suficiente saldo (incluyendo el costo de $1000)
+    if (saldo >= (cantidad_retiro + 1000)) {
+        // Calcular nuevo saldo
+        int nuevo_saldo = saldo - cantidad_retiro - 1000;
+        saldo_actual = to_string(nuevo_saldo);
+
+        // ACTUALIZAR ARCHIVO TXT
+        ifstream txt_lectura(archivo_txt);
+        ofstream txt_temporal("usuarios_temp.txt");
+        string linea;
+
+        while (getline(txt_lectura, linea)) {
+            stringstream ss(linea);
+            string cedula_archivo, clave_archivo, saldo_old;
+            getline(ss, cedula_archivo, ',');
+            getline(ss, clave_archivo, ',');
+            getline(ss, saldo_old, ',');
+
+            if (cedula_archivo == cedula && clave_archivo == clave) {
+                txt_temporal << cedula << "," << clave << "," << saldo_actual << endl;
+            } else {
+                txt_temporal << linea << endl;
+            }
+        }
+        txt_lectura.close();
+        txt_temporal.close();
+
+        // Reemplazar archivo original
+        remove(archivo_txt);
+        rename("usuarios_temp.txt", archivo_txt);
+
+        // ACTUALIZAR ARCHIVO BIN
+        ofstream limpiar_bin(archivo_bin, ios::binary | ios::trunc);
+        limpiar_bin.close();
+
+        ifstream txt_completo(archivo_txt);
+        string linea_actual;
+        while (getline(txt_completo, linea_actual)) {
+            ofstream temp_linea(usuario_temp_txt);
+            temp_linea << linea_actual;
+            temp_linea.close();
+
+            if (metodo_elegido_global == 1) {
+                codificar_primer_metodo(usuario_temp_txt, usuario_codificado_temp, semilla_n_global);
+            } else if (metodo_elegido_global == 2) {
+                codificar_segundo_metodo(usuario_temp_txt, usuario_codificado_temp, semilla_n_global);
+            }
+
+            ofstream bin_out(archivo_bin, ios::app | ios::binary);
+            ifstream codificado_in(usuario_codificado_temp, ios::binary);
+
+            if (bin_out.is_open() && codificado_in.is_open()) {
+                codificado_in.seekg(0, ios::end);
+                long size = codificado_in.tellg();
+                codificado_in.seekg(0, ios::beg);
+
+                char* buffer = new char[size];
+                codificado_in.read(buffer, size);
+                bin_out.write(buffer, size);
+                delete[] buffer;
+                bin_out << '\n';
+            }
+            bin_out.close();
+            codificado_in.close();
+        }
+        txt_completo.close();
+
+        remove(usuario_temp_txt);
+        remove(usuario_codificado_temp);
+
+        cout << "\n*** RETIRO EXITOSO ***" << endl;
+        cout << "Cantidad retirada: $" << cantidad_retiro << endl;
+        cout << "Costo por retiro: $1000" << endl;
+        cout << "Nuevo saldo: $" << saldo_actual << endl;
+        cout << "**********************" << endl;
+    } else {
+        cout << "✗ Saldo insuficiente para realizar el retiro" << endl;
+        cout << "Necesitas: $" << (cantidad_retiro + 1000) << " (retiro + costo)" << endl;
+        cout << "Saldo disponible: $" << saldo << endl;
+    }
+}
+
 void menuUsuario() {
     const char* archivo_txt = "usuarios.txt";
     const char* archivo_bin = "usuarios.bin";
@@ -175,7 +273,8 @@ void menuUsuario() {
     do {
         cout << "\n--- MENU USUARIO ---" << endl;
         cout << "1. Consultar saldo (costo: $1000)" << endl;
-        cout << "2. Salir" << endl;
+        cout << "2. Realizar retiro (costo: $1000)" << endl;  // ← Actualiza esta línea
+        cout << "3. Salir" << endl;
         cout << "Ingrese opcion: ";
         cin >> opcion_usuario;
 
@@ -263,9 +362,12 @@ void menuUsuario() {
         }
 
         case 2:
+            realizarRetiro(cedula_encontrada, clave_encontrada, saldo_usuario);
+
+            break;
+        case 3:
             cout << "Saliendo del menu usuario..." << endl;
             break;
-
         default:
             cout << "Opcion no valida" << endl;
         }
