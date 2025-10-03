@@ -1,4 +1,3 @@
-// Para remove()
 #include "librerias.h"
 
 bool existeCedula(const string& cedula) {
@@ -9,7 +8,7 @@ bool existeCedula(const string& cedula) {
 
     string linea;
     while (getline(txt_in, linea)) {
-        stringstream ss(linea);
+        stringstream ss(linea); //indicador de cada linea
         string cedula_almacenada;
 
         getline(ss, cedula_almacenada, ',');

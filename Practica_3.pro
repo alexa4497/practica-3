@@ -10,7 +10,8 @@ SOURCES += \
         main.cpp \
         menus.cpp \
         metodo1.cpp \
-        metodo2.cpp
+        metodo2.cpp \
+        sistemaUsuarios.cpp
 
 HEADERS += \
     librerias.h

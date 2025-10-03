@@ -2,7 +2,7 @@
 using namespace std;
 
 void verificarInicializacionAdmin(int n, int metodo) {
-    imprimirArchivoBinario("sudo.bin");
+    inicializarBaseAdmin(n, metodo);
     cout << "\n*** La base de datos de administradores fue CONFIGURADA/ACTUALIZADA con la Semilla (n): " << n << " y Metodo: " << metodo << " ***" << std::endl;
 }
 
